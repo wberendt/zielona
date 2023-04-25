@@ -1,0 +1,11 @@
+* text=lf
+
+*.java text
+*.json text
+*.xml text
+*.yml text
+*.md text
+*.sh text
+*.txt text
+
+*.jar binary
