@@ -14,7 +14,7 @@ import java.util.List;
 class TransactionServiceTest {
 
     private ObjectMapper mapper = new ObjectMapper();
-    private TransactionService transactionService = new TransactionServiceHashImpl();
+    private TransactionService transactionService = new TransactionServiceImpl();
 
     @Test
     void report() throws IOException {
