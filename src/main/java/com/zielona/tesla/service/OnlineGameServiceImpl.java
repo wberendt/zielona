@@ -23,7 +23,7 @@ public class OnlineGameServiceImpl implements OnlineGameService {
                 )
                 .collect(Collectors.toCollection(LinkedList::new));
 
-        List<List<Clan>> listOfEntries = new ArrayList<>();
+        List<List<Clan>> listOfEntries = new LinkedList<>();
         while (!sorted.isEmpty()) {
             int sum = 0;
             var listOfClans = new ArrayList<Clan>(groupCount);
