@@ -20,35 +20,10 @@ public class AtmsServiceImpl implements AtmsService {
     public List<ATM> calculate(List<Task> tasks) {
         var bucketsOfRegions = new ArrayList<Region>(Collections.nCopies(MAX_NUMBER_OF_REGIONS, null));
         final int counterOfAtms = insertAtmsToBuckets(tasks, bucketsOfRegions);
-
         return getAtms(bucketsOfRegions, counterOfAtms);
     }
 
-    private ArrayList<ATM> getAtms(ArrayList<Region> bucketsOfRegions, final int counterOfAtms) {
-        var result = new ArrayList<ATM>(counterOfAtms);
-        for (int i = 1; i < MAX_NUMBER_OF_REGIONS; i++) {
-            var region = bucketsOfRegions.get(i);
-            if (region == null) {
-                continue;
-            }
-            for (int j = Region.FIRST_QUEUE; j < Region.LAST_QUEUE; j++) {
-                var queue = region.getQueue(j);
-                if (queue == null) {
-                    continue;
-                }
-                var atmIdIt = queue.iterator();
-                while (atmIdIt.hasNext()) {
-                    result.add(new ATM(i, atmIdIt.next()));
-                    if (counterOfAtms == result.size()) {
-                        return result;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    private int insertAtmsToBuckets(List<Task> tasks, ArrayList<Region> bucketsOfRegions) {
+    private int insertAtmsToBuckets(List<Task> tasks, List<Region> bucketsOfRegions) {
         int counterOfAtms = tasks.size();
         for (Task task: tasks) {
             var region = bucketsOfRegions.get(task.getRegion());
@@ -66,15 +41,12 @@ public class AtmsServiceImpl implements AtmsService {
     private boolean insertAtmToRegion(Task task, Region region) {
         for (int i = Region.FIRST_QUEUE; i < Region.LAST_QUEUE; i++) {
             Set<Integer> queue = region.getQueue(i);
-            if (queue == null) {
-                continue;
-            }
-            if (queue.contains(task.getAtmId())) {
-                if (task.getRequestType().getPriority() < i) {
-                    queue.remove(task.getAtmId());
-                    addAtmIdToQueue(task, region);
-                }
-                return true;
+            if (queue != null && queue.contains(task.getAtmId())) {
+                    if (task.getRequestType().getPriority() < i) {
+                        queue.remove(task.getAtmId());
+                        addAtmIdToQueue(task, region);
+                    }
+                    return true;
             }
         }
         addAtmIdToQueue(task, region);
@@ -90,5 +62,24 @@ public class AtmsServiceImpl implements AtmsService {
         } else {
             queue.add(task.getAtmId());
         }
+    }
+
+    private List<ATM> getAtms(List<Region> bucketsOfRegions, final int counterOfAtms) {
+        var result = new ArrayList<ATM>(counterOfAtms);
+        for (int i = 1; result.size() < counterOfAtms; i++) {
+            var region = bucketsOfRegions.get(i);
+            if (region != null) {
+                for (int j = Region.FIRST_QUEUE; j < Region.LAST_QUEUE; j++) {
+                    var queue = region.getQueue(j);
+                    if (queue != null) {
+                        var atmIdIt = queue.iterator();
+                        while (atmIdIt.hasNext()) {
+                            result.add(new ATM(i, atmIdIt.next()));
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
