@@ -13,7 +13,7 @@ import java.util.Map;
 public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Account> report(List<Transaction> transactions) {
-        Map<String, Account> accounts = new HashMap<>((transactions.size()) >> 2 + 16);
+        Map<String, Account> accounts = new HashMap<>((transactions.size() >> 2) + 16);
 
         transactions.forEach(
             tr -> {
