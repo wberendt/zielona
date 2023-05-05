@@ -13,7 +13,7 @@ import java.util.Map;
 public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Account> report(List<Transaction> transactions) {
-        Map<String, Account> accounts = new HashMap<>((transactions.size() >> 2) + 16);
+        Map<String, Account> accounts = new HashMap<>(closestPowerOf2(transactions.size()));
 
         transactions.forEach(
             tr -> {
@@ -40,5 +40,13 @@ public class TransactionServiceImpl implements TransactionService {
         return accounts.values().stream()
                 .sorted((e1, e2) -> e1.getAccountNumber().compareTo(e2.getAccountNumber()))
                 .toList();
+    }
+
+    private int closestPowerOf2(int num) {
+        int power = 32;
+        while (power <= num/2) {
+            power *= 2;
+        }
+        return power;
     }
 }
