@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class AtmsServiceImpl implements AtmsService {
@@ -28,55 +26,25 @@ public class AtmsServiceImpl implements AtmsService {
         for (Task task: tasks) {
             var region = bucketsOfRegions.get(task.getRegion());
             if (region == null) {
-                region = new Region();
+                region = new Region(task.getRequestType().getPriority(), task.getAtmId());
                 bucketsOfRegions.set(task.getRegion(), region);
-            }
-            if (insertAtmToRegion(task, region)) {
-                counterOfAtms--;
+            } else {
+                if (region.addAtm(task.getRequestType().getPriority(), task.getAtmId())) {
+                    counterOfAtms--;
+                }
             }
         }
         return counterOfAtms;
     }
 
-    private boolean insertAtmToRegion(Task task, Region region) {
-        for (int i = Region.FIRST_QUEUE; i < Region.LAST_QUEUE; i++) {
-            Set<Integer> queue = region.getQueue(i);
-            if (queue != null && queue.contains(task.getAtmId())) {
-                    if (task.getRequestType().getPriority() < i) {
-                        queue.remove(task.getAtmId());
-                        addAtmIdToQueue(task, region);
-                    }
-                    return true;
-            }
-        }
-        addAtmIdToQueue(task, region);
-        return false;
-    }
-
-    private void addAtmIdToQueue(Task task, Region region) {
-        var queue = region.getQueue(task.getRequestType().getPriority());
-        if (queue == null) {
-            queue = new LinkedHashSet<>();
-            queue.add(task.getAtmId());
-            region.setQueue(task.getRequestType().getPriority(), queue);
-        } else {
-            queue.add(task.getAtmId());
-        }
-    }
-
     private List<ATM> getAtms(List<Region> bucketsOfRegions, final int counterOfAtms) {
         var result = new ArrayList<ATM>(counterOfAtms);
-        for (int i = 1; result.size() < counterOfAtms; i++) {
-            var region = bucketsOfRegions.get(i);
+        for (int regionId = 1; regionId < MAX_NUMBER_OF_REGIONS; regionId++) {
+            var region = bucketsOfRegions.get(regionId);
             if (region != null) {
-                for (int j = Region.FIRST_QUEUE; j < Region.LAST_QUEUE; j++) {
-                    var queue = region.getQueue(j);
-                    if (queue != null) {
-                        var atmIdIt = queue.iterator();
-                        while (atmIdIt.hasNext()) {
-                            result.add(new ATM(i, atmIdIt.next()));
-                        }
-                    }
+                region.fill(result, regionId);
+                if (result.size() == counterOfAtms) {
+                    break;
                 }
             }
         }
