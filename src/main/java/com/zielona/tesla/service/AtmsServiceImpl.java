@@ -26,8 +26,10 @@ public class AtmsServiceImpl implements AtmsService {
         for (Task task: tasks) {
             var region = bucketsOfRegions.get(task.getRegion());
             if (region == null) {
-                region = new Region(task.getRequestType().getPriority(), task.getAtmId());
-                bucketsOfRegions.set(task.getRegion(), region);
+                bucketsOfRegions.set(
+                        task.getRegion(),
+                        new Region(task.getRequestType().getPriority(), task.getAtmId())
+                );
             } else {
                 if (region.addAtm(task.getRequestType().getPriority(), task.getAtmId())) {
                     counterOfAtms--;
