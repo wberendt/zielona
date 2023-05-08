@@ -19,8 +19,10 @@ public class TransactionServiceImpl implements TransactionService {
             tr -> {
                 var creditAccount = accounts.get(tr.getCreditAccount());
                 if (creditAccount == null) {
-                    creditAccount = new Account(tr.getCreditAccount(), 0, 1, new BigDecimal(String.valueOf(tr.getAmount())));
-                    accounts.put(tr.getCreditAccount(), creditAccount);
+                    accounts.put(
+                            tr.getCreditAccount(),
+                            new Account(tr.getCreditAccount(), 0, 1, new BigDecimal(String.valueOf(tr.getAmount())))
+                    );
                 } else {
                     creditAccount.incCreditCount();
                     creditAccount.setBalance(creditAccount.getBalance().add(tr.getAmount()));
@@ -28,8 +30,10 @@ public class TransactionServiceImpl implements TransactionService {
 
                 var debitAccount = accounts.get(tr.getDebitAccount());
                 if (debitAccount == null) {
-                    debitAccount = new Account(tr.getDebitAccount(), 1, 0, (new BigDecimal(String.valueOf(tr.getAmount()))).negate());
-                    accounts.put(tr.getDebitAccount(), debitAccount);
+                    accounts.put(
+                            tr.getDebitAccount(),
+                            new Account(tr.getDebitAccount(), 1, 0, (new BigDecimal(String.valueOf(tr.getAmount()))).negate())
+                    );
                 } else {
                     debitAccount.incDebitCount();
                     debitAccount.setBalance(debitAccount.getBalance().subtract(tr.getAmount()));

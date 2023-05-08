@@ -4,7 +4,6 @@ import com.zielona.tesla.model.onlinegame.Clan;
 import com.zielona.tesla.model.onlinegame.Players;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class OnlineGameServiceImpl implements OnlineGameService {
         List<List<Clan>> listOfEntries = new LinkedList<>();
         while (!sorted.isEmpty()) {
             int sum = 0;
-            var listOfClans = new ArrayList<Clan>(groupCount);
+            var listOfClans = new LinkedList<Clan>();
             var it = sorted.listIterator();
             while (it.hasNext()) {
                 var el = it.next();
