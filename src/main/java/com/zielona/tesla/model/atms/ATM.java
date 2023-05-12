@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-/**
- * ATMs details
- */
-
 public class ATM {
 
   public ATM() {
@@ -24,12 +20,6 @@ public class ATM {
   @JsonProperty("atmId")
   private int atmId;
 
-  /**
-   * Get region
-   * minimum: 1
-   * maximum: 9999
-   * @return region
-  */
   public int getRegion() {
     return region;
   }
@@ -38,12 +28,6 @@ public class ATM {
     this.region = region;
   }
 
-  /**
-   * Get atmId
-   * minimum: 1
-   * maximum: 9999
-   * @return atmId
-  */
   public int getAtmId() {
     return atmId;
   }

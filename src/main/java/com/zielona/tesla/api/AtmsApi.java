@@ -3,13 +3,11 @@ package com.zielona.tesla.api;
 import com.zielona.tesla.model.atms.ATM;
 import com.zielona.tesla.model.atms.Task;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@Validated
 public interface AtmsApi {
 
     /**
