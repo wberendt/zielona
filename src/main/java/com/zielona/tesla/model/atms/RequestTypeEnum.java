@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Map;
 
+/**
+ * Request type
+ */
 public enum RequestTypeEnum {
     FAILURE_RESTART("FAILURE_RESTART"),
     PRIORITY("PRIORITY"),
@@ -20,15 +23,27 @@ public enum RequestTypeEnum {
             "STANDARD", 3
     );
 
+    /**
+     * Constructor
+     * @param value
+     */
     RequestTypeEnum(String value) {
         this.value = value;
     }
 
+    /**
+     * Get value
+     * @return value
+     */
     @JsonValue
     public String getValue() {
         return value;
     }
 
+    /**
+     * Get priority
+     * @return priority
+     */
     public Integer getPriority() {
         return priority.get(this.value);
     }

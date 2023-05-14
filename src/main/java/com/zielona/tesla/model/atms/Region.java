@@ -6,6 +6,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Region
+ */
 public class Region {
 
     private static final int FIRST_QUEUE = 0;
@@ -17,11 +20,22 @@ public class Region {
 
     private final List<Set<Integer>> queue;
 
+    /**
+     * Constructor
+     * @param priority
+     * @param atmId
+     */
     public Region(int priority, int atmId) {
         this.queue = new ArrayList<>(Collections.nCopies(LAST_QUEUE, null));
         createSetOfAtmsAndAddFirst(priority, atmId);
     }
 
+    /**
+     * Add ATM
+     * @param priority
+     * @param atmId
+     * @return true if ATM already exists in the region, false if it's new
+     */
     public boolean addAtm(int priority, int atmId) {
         for (int q = Region.FIRST_QUEUE; q < Region.LAST_QUEUE; q++) {
             var setOfAtms = queue.get(q);
@@ -37,6 +51,11 @@ public class Region {
         return false;
     }
 
+    /**
+     * Fill with the list of ATMs for specified region
+     * @param atms
+     * @param regionNum
+     */
     public void fill(List<ATM> atms, final int regionNum) {
         for (int q = Region.FIRST_QUEUE; q < Region.LAST_QUEUE; q++) {
             var setOfAtms = queue.get(q);

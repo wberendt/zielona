@@ -5,11 +5,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * Account
+ */
 public class Account {
 
+    /**
+     * Constructor
+     */
     public Account() {
     }
 
+    /**
+     * Constructor
+     * @param account
+     * @param debitCount
+     * @param creditCount
+     * @param balance
+     */
     public Account(String account, int debitCount, int creditCount, BigDecimal balance) {
         this.accountNumber = account;
         this.debitCount = debitCount;
@@ -29,34 +42,65 @@ public class Account {
     @JsonProperty("balance")
     private BigDecimal balance;
 
+
+    /**
+     * Get account number
+     * @return accountNumber
+     */
     public String getAccountNumber() {
         return accountNumber;
     }
 
+    /**
+     * Set account number
+     * @param accountNumber
+     */
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
+    /**
+     * Number of debit transactions
+     * @return debitCount
+     */
     public int getDebitCount() {
         return debitCount;
     }
 
+    /**
+     * Increment number of debit transactions
+     */
     public void incDebitCount() {
         this.debitCount++;
     }
 
+    /**
+     * Number of credit transactions
+     * @return creditCount
+     */
     public int getCreditCount() {
         return creditCount;
     }
 
+    /**
+     * Increment number of credit transactions
+     */
     public void incCreditCount() {
         this.creditCount++;
     }
 
+    /**
+     * Get balance
+     * @return balance
+     */
     public BigDecimal getBalance() {
         return balance;
     }
 
+    /**
+     * Set balance
+     * @param balance
+     */
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
